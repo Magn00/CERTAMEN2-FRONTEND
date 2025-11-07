@@ -32,9 +32,32 @@ function ComprarEntradaForm({ onCreateEntrada = (entrada) => {} }) {
     const [pelicula, setPelicula] = useState(null);
 
     const handleClick = () => {
-        // validación campos
-        if (!dia || !tipoPago || !cantidad || cantidad <= 0 || !ciudad || !pelicula) {
-            onCreateEntrada(null); // envia null
+        // Acumular todos los errores
+        const errores = [];
+        
+        if (!dia) {
+            errores.push("Debe seleccionar un día de la semana");
+        }
+        
+        if (!tipoPago) {
+            errores.push("Debe seleccionar un tipo de pago");
+        }
+        
+        if (!cantidad || cantidad <= 0) {
+            errores.push("La cantidad debe ser mayor que 0");
+        }
+        
+        if (!ciudad || ciudad.trim() === '') {
+            errores.push("Debe ingresar una ciudad");
+        }
+        
+        if (!pelicula) {
+            errores.push("Debe seleccionar una película");
+        }
+
+        // enviar todos los errores
+        if (errores.length > 0) {
+            onCreateEntrada({ error: errores.join(", ") });
             return;
         }
 
@@ -48,7 +71,7 @@ function ComprarEntradaForm({ onCreateEntrada = (entrada) => {} }) {
         
         onCreateEntrada(entrada);
         
-        // limpiar formulario
+        // Limpiar formulario
         setDia(null);
         setTipoPago('Efectivo');
         setCantidad(null);

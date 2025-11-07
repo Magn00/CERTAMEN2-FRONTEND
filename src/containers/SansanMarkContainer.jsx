@@ -15,17 +15,17 @@ const SansanMarkContainer = () => {
     }, []);
 
     const handleEntradaCreate = (entrada) => {
-        // Si entrada es null, significa que hubo un error de validación
-        if (entrada === null) {
+        // Si entrada tiene la propiedad 'error', significa que hubo un error de validación
+        if (entrada && entrada.error) {
             toast.current.show({
                 severity: "error", 
-                summary: "Datos inválidos", 
-                detail: "Todos los campos son obligatorios y la cantidad debe ser mayor que 0",
+                summary: "Error de validación", 
+                detail: entrada.error,
                 sticky: true
             });
             return;
         }
-
+        
         // Crear la entrada
         createEntrada(entrada);
         setEntradas(getEntradas());
